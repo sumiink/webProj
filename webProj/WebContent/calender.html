@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>calender.html</title>
+</head>
+
+<body>
+    <script>
+        var month = 5;
+        var today = new Date(2021, (month - 1), 1);
+        console.log(today.getDay())
+        var lastDay = new Date(2021, month, 0);
+        console.log(lastDay.getDate())
+
+        var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat'];
+        var tb1 = '<table border="1"><tr>';
+        for (day of days) {
+            tb1 += '<th>' + day + '</th>';
+        }
+        tb1 += '</tr><tr>';
+
+        for (var i = 0; i < today.getDay(); i++) {
+            tb1 += '<td></td>'
+        }
+        for (var i = 1; i <= lastDay.getDate(); i++) {
+            if (i % 7 == 7 - today.getDay()) {
+                tb1 += '   <td style="background-color:blue;">' + i + '</td>';
+                tb1 += '</tr><tr>';
+            }else{
+                tb1 += '   <td>' + i + '</td>';
+            }
+        }
+        tb1 += '</tr>';
+        tb1 += '</table>';
+        document.write(tb1);
+    </script>
+</body>
+
+</html>
