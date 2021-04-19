@@ -10,7 +10,7 @@ var ps = document.querySelectorAll('div>p');
 console.log(ps);
 ps.forEach(function(val){
     console.log(val);
-    val.innerText ='<h1>hello</h1>';       //''문자 그대로.
+    val.innerText ='<h1>hello</h1>';       //''문자 그대로
     val.innerHTML = '<h1>hello</h1>';       // 
     val.textContent = '<h1>hello</h1>';     //''문자 그대로
     val.style.backgroundColor = 'green';
