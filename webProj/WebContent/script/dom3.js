@@ -1,6 +1,6 @@
 var names = [];
 names[0] = '유정모';
-names.push('구자혁');       //push: 마지막 위치 추가 ㄹ
+names.push('구자혁');       //push: 마지막 위치 추가 
 names.push('석정원');
 names.pop();                //pop메서드:마지막 위치 하나 삭제
 delete names[0];            //delet: 값만 지우고 위치는 차지 (요소정보삭제)

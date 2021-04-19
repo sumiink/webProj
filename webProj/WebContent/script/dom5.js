@@ -25,7 +25,7 @@ for (var field in p3) {
     console.log(field, p3[field]);
 }
 var persons = [p1, p2, p3];
-// <table border ='1'> <tr><td>성진아</td><td>80</tr>......</table>
+// <table border ='1'> <tr><td>성진아</td><td>80</tr>.....</table>
 for (var p of persons) { //배열의 개수만큼 반복.
     console.log(`name요소: ${p.name}`);
     console.log(`score요소: ${p.score}`);
