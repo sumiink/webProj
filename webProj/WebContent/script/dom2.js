@@ -1,6 +1,6 @@
 /**
  * login.js
- *     <!-- 예제-->
+ *     <!-- 예제ㅇㅇ-->
     <!-- <form action = "login.jsp" method="get">
         id:<input type = 'text' name="id">
         passwd:<input type='password' name='passwd'>
