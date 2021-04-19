@@ -1,7 +1,7 @@
 /**
  * 
     <!-- <div>Hello</div>
-    <div><a href='www.daum.net'>다음 페이지</a></div>-->
+    <div><a href='www.daum.net'>다음 페이지</a></div> -->
  */	
     
     var h1Tag = document.createElement('h1');
