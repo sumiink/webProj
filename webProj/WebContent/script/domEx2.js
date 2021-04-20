@@ -25,7 +25,7 @@ function createData() {
             } else if (field == 'name') {
                 var tdTag = document.createElement('td');
                 var link = document.createElement('a');
-                link.setAttribute('href','dom.jsp?name' + person.name+ '&id=' +person.id + '&score=' +person.score + '&gender='+person.gender);
+                link.setAttribute('href','dom.jsp?name'+ person.name+ '&id=' +person.id + '&score=' +person.score + '&gender='+person.gender);
                 link.innerHTML = person.name;
                 tdTag.appendChild(link);
                 trTag.appendChild(tdTag);
