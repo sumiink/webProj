@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="script/domEx2.js"></script>
+    <script>
+        // document.addEventListener
+
+        document.addEventListener('DOMContentLoaded', function () { //document 전부 load된후에 실행
+            
+            //<페이지 로딩 시 회원리스트>
+            //타이틀과 데이터 처리
+            //table, tr, td
+            var tbl = document.getElementById('tbl');
+            createTitle('이름', '아이디', '점수', '성별', '기능');
+            createData();
+            
+            //<저장버튼 클릭시.>
+            var saveBtn = document.getElementById('saveBtn');
+            console.log(saveBtn);
+            saveBtn.addEventListener('click', saveBtnFnc);
+
+            //<수정버튼 클릭시>
+            var modifyBtn = document.getElementById('modifyBtn');
+            modifyBtn.addEventListener('click', modifyBtnFunc);
+
+        });
+        // window.onload = function(){             // 후 실행
+
+        // }
+    </script>
+</head>
+
+<body>
+    <div>
+        <div>이름:<input type="text" name="name" id='name' value='Kim'></div>
+        <div>아이디:<input type="text" name="id" id='id' value='user4'></div>
+        <div>점수:<input type="text" name="score" id='score' value='77'></div>
+        <div>성별:<input type="radio" name="gender" value='남' checked>남성
+            <input type="radio" name="gender" value='여'>여성
+        </div>
+        <div>
+            <button id='saveBtn'>저장</button>
+            <button id='modifyBtn'>수정</button>
+        </div>
+    </div>
+
+    <table id="tbl" border="1">
+        <caption><b>회원리스트</b></caption>
+    </table>
+
+    <script>
+        console.log('3');
+        var p1 = {
+            name: 'Hong',
+            id: 'user1',
+            score: 80,
+            gender: '남'
+        }
+        var p2 = {
+            name: 'Hwang',
+            id: 'user2',
+            score: 84,
+            gender: '남'
+        }
+        var p3 = {
+            name: 'Park',
+            id: 'user3',
+            score: 86,
+            gender: '여'
+        }
+        var p4 = {
+            name: 'Choi',
+            id: 'user4',
+            score: 82,
+            gender: '여'
+        }
+        var persons = [p1, p2, p3, p4];
+    </script>
+</body>
+
+</html>

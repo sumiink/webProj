@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>domEx.html</title>
+</head>
+
+<body>
+    <table id="tbl" border="1">
+        <tr>
+            <th>이름</th>
+            <th>아이디</th>
+            <th>점수</th>
+            <th>성별</th>
+            <th>기능</th>
+        </tr>
+        <tr>
+            <td id='Hong'>Hong</td>
+            <td>usesr1</td>
+            <td>80</td>
+            <td>남</td>
+            <td><button>삭제</button></td>
+        </tr>
+
+    </table>
+
+    <script>
+        var p1 = {
+            name: 'Hong',
+            id: 'user1',
+            score: 80,
+            gender: '남'
+
+
+        }
+        var p2 = {
+            name: 'Hwang',
+            id: 'user2',
+            score: 84,
+            gender: '남'
+
+        }
+        var p3 = {
+            name: 'Park',
+            id: 'user3',
+            score: 86,
+            gender: '여'
+
+        }
+        var p4 = {
+            name: 'Choi',
+            id: 'user4',
+            score: 82,
+            gender: '여'
+
+        }
+
+
+        for (var field in p3) { //p3객체의 field변수를 반복실행하여 가져옴
+            // console.log(field, p3[field]);
+        }
+        var persons = [p1, p2, p3, p4];
+        for (var p of persons) { //persons객체의 p1,p2,p3,p4 변수를 반복실행하여 가져옴
+            // console.log(`name: ${p.name}`);
+        }
+
+        var tbl = document.getElementById('tbl');
+        for (var person of persons) {
+            var trTag = document.createElement('tr'); //tr생성
+            for (var field in person) {
+                var tdTag = document.createElement('td'); //td태그생성
+                var btn = document.querySelectorAll('button');
+                btn.innerHTML = '삭제';
+                btn.onclick = function () {
+                    this.parentNod.parentNod.remove();
+                }
+                tdTag.innerHTML = person[field]; //td태그 안에 person[field]반복
+                trTag.appendChild(tdTag); //td를 tr에 넣어줌(자식)
+                tdTag.appendChild(btn);
+            }
+            tbl.appendChild(trTag); //테이블안에 <tr></tr>넣어줌(자식)
+        }
+    </script>
+</body>
+
+</html>
