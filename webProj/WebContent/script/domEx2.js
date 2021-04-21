@@ -8,6 +8,7 @@ function createTitle() {
     tbl.appendChild(trTag);
 }
 
+//회원리스트에 회원정보 보여주는 FUNCTION
 function createData() {
     for (var person of persons) {
         var trTag = document.createElement('tr');
@@ -25,16 +26,16 @@ function createData() {
             } else if (field == 'name') {
                 var tdTag = document.createElement('td');
                 var link = document.createElement('a');
-                link.setAttribute('href','dom.jsp?name'+ person.name+ '&id=' +person.id + '&score=' +person.score + '&gender='+person.gender);
+                link.setAttribute('href', 'dom.jsp?name=' + person.name + '&id=' + person.id + '&score=' + person.score + '&gender=' + person.gender);
                 link.innerHTML = person.name;
                 tdTag.appendChild(link);
                 trTag.appendChild(tdTag);
-           
+
             } else {
                 var tdTag = document.createElement('td');
                 var text = document.createTextNode(person[field]);
                 trTag.appendChild(tdTag);
-                tdTag.appendChild(text); 
+                tdTag.appendChild(text);
             }
         }
         var btn = document.createElement('button');
@@ -64,7 +65,7 @@ function deleteRow() {
 function modifyFunc() {
     console.log(this);
     var idVal = this.innerHTML;
-    var nameVal = this.previousSibling.innerHTML;
+    var nameVal = this.previousSibling.firstChild.innerHTML; //childNodes[0] or firstChild
     var scoreVal = this.nextSibling.innerHTML;
     var genval = this.parentNode.childNodes[3].innerHTML;
     console.log(idVal, nameVal, scoreVal, genval);
@@ -120,11 +121,18 @@ function saveBtnFnc() {
     tbl.appendChild(trTag);
 }
 
+//수정버튼 클릭시 변경 Function
 function modifyBtnFunc() {
     var id = document.getElementById('id').value;
-    var targetTr = document.getElementById(id);
+    //사용자가 변경한 값을 반영
+    var name = document.getElementById('name').value;
+    var socre = document.getElementById('score').value;
+    var gender = document.querySelector('input[name="gender"]:checked').value;
+
+    var targetTr = document.getElementById(id); //id로 tr찾아오기
     console.log(targetTr);
-    targetTr.children[0].innerHTML = document.getElementById('name').value;
-    targetTr.children[2].innerHTML = document.getElementById('score').value;
-    targetTr.children[3].innerHTML = document.querySelector('input[name="gender"]:checked').value;
+    //<a href ='dom.js?name=?&id=?&score=?&gender=?>
+    targetTr.children[0].innerHTML = '<a href="dom.jsp?name='+name+'&id='+id+'&score='+score+'&gender='+gender+'">'+name+'</a>'; 
+    targetTr.children[2].innerHTML = score;
+    targetTr.children[3].innerHTML = gender;
 }
