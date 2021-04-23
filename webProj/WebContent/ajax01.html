@@ -5,21 +5,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ajax.html</title>
+    <title>ajax_jquery.html</title>
+    <script src ='jauery-3.6.0.min.js'></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var frm = document.getElementById('frm');
             frm.addEventListener('submit', function (e) {
                 e.preventDefault();
                 console.log(e);
-                var fn = document.getElementById('first_name').value;
-                var ln = document.getElementById('last_name').value;
-                var em = document.getElementById('email').value;
-                var hd = document.getElementById('hire_date').value;
-                var ji = document.getElementById('job_id').value;
-                var sl = document.getElementById('salary').value;
+                //javascript => jquery
+                
+/*                 var ln = document.getElementById('last_name').value; */
+                var ln = document.getElementById('last_name').val();		//id:last_name element의 value값
+                var em = $('#email').value;
+                var hd = $('#hire_date').value;
+                var ji = $('#job_id').value;
+                var fn = $('#first_name').value;
+                var sl = $('#salary').value;
                 var data = 'first_name=' + fn + '&last_name=' + ln + '&email=' + em + '&hire_date=' +
                     hd + '&job_id=' + ji + '&salary=' + sl;
+                
                 var xhtp = new XMLHttpRequest();
                 xhtp.open('post', 'empList.do');
                 xhtp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -65,7 +70,7 @@
             salary: '급여',
             hire_date: '입사일자',
             job_id: '직무',
-            botton: '삭제'
+            button: '삭제'
         }
         //readyState : 1 => connection 2=> request received.
         //3 => processing request 4=> request finished response ready
@@ -77,17 +82,18 @@
                 console.log(obj);
 
                 // table tr td => div.appendChild();
-                table.setAttribute('border', '1');
+                table =$('<table/'); 	//documnet.createElement('table');
+                tabel.attr('border','1'); 	//table.setAttribute('border', '1');
 
                 //타이틀
-                var tr = document.createElement('tr');
+                var tr =$('<tr />');			// document.createElement('tr');
                 for (var field in title) {
-                    var td = document.createElement('th');
-                    var text = document.createTextNode(title[field]);
-                    td.appendChild(text);
-                    tr.appendChild(td);
+                    var td = $('th />').html(title[field]); 	//document.createElement('th');
+                    //var text = document.createTextNode(title[field]);
+                    //td.appendChild(text);
+                    tr.append(td);		//tr.appendChild(td);
                 }
-                table.appendChild(tr);
+                table.append(tr);			//table.appendChild(tr);
 
                 // 배열의 개수만큼 tr을 생성.
                 for (var data of obj) {
