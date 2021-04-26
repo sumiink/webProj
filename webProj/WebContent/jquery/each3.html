@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            $.ajax({
+                url: '../MOCK_DATA.json',
+                dataType: 'json',
+                success: successCalFnc,
+                error: errorCallFnc
+            }); //XMLHttpRequest();
+
+        });
+
+        function successCalFnc(resolve) {
+            console.log(resolve);
+            let tbl = $('<table/>'); //table생성
+            tbl.attr('border', '1'); //속성지정
+            $.each(resolve, function (i, o) { //데이터 건수만큼 루핑
+                let trTag = $('<tr/>'); //row생성
+                trTag.attr('id', o.id);
+                trTag.mouseover(mouseoverFnc);
+                trTag.mouseout(mouseoutFnc)
+                let btn = $('<button/>').html('Del');
+                btn.click((event)=>{
+                    console.log($(this),event);
+                    // $(this) => function : event 대상,     arrow fnc: object
+                    event.currentTarget.parentNode.parentNode.remove(); 
+                });
+                trTag.append(
+                    $('<td/>').html(o.id),
+                    $('<td/>').html(o.first_name),
+                    $('<td/>').html(o.last_name),
+                    $('<td/>').html(o.email),
+                   $('<td/>').append(btn)
+                );
+                tbl.append(trTag);
+            });
+            $('#show').html(tbl); //<p>1</p><p>2</p>.....<p>20</p>
+        }
+
+        function errorCallFnc(reject) {
+            console.error(reject);
+        }
+
+        function mouseoverFnc() {
+            $(this).css('background-color', 'yellow');
+        }
+
+        function mouseoutFnc() {
+            $(this).css('background-color', 'pink');
+        }
+
+        function clickFnc() {
+            alert($(this).attr('id')); //$this==tr
+        }
+    </script>
+</head>
+
+<body>
+    <div id="show"></div>
+
+</body>
+
+</html>
