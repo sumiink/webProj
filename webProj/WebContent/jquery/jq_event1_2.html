@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+.content {
+	background-color: yellow;
+}
+
+span {
+	display: inline-block;
+	width: 50vw;
+	text-decoration: underline;
+}
+</style>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<body>
+	<p>
+		<button class="btn1">버튼1</button>
+	</p>
+	<p>내용1</p>
+	<p>
+		<button class="btn2">버튼2</button>
+	</p>
+	<p>내용2</p>
+
+	<input type='text' name="firstName" value="kildo">
+	<input type='number' name='age' value=10>
+	<button id='btn3'>추가</button>
+	<p id='show'></p>
+
+
+	<script>
+	$('#btn3').click(function() {
+		let fname = $('input[type="text"]').val();
+		let age = $('input[type="number"]').val();
+		let btn = $('<button />').html('Del');
+		btn.click(function(){$(this).parent().remove();  });
+		
+		let color = $('<span/>').html(fname + ', ' + age );
+		
+		$('p#show').append($('<div/>').append(color).append(btn));
+		
+		$(color).on({
+			mouseover:function(){
+				$(this).css({
+					'background-color' : 'red'
+				});
+			},
+			mouseout : function() {
+				$(this).css({
+					'background-color' : 'blue',
+					'font-size' : '15px'
+				})
+			}
+		});
+	});
+
+	$(".btn1").click(function() {
+		$('p:contains(내용1)').html('Hello');
+	});
+
+	$(".btn2").on(
+			'click',
+			function() {
+				$(this).parent().next().css('color', 'red').attr('id',
+						'content2').addClass('content');
+			});
+
+	$('p:eq(1)').on({
+		mouseover : function() {
+			$(this).css({
+				'background-color' : 'aqua',
+				'font-size' : '30px'
+			})
+		},
+		mouseout : function() {
+			$(this).css({
+				'background-color' : '',
+				'font-size' : '15px'
+			})
+		}
+	});
+</script>
+</head>
+</body>
+</html>
