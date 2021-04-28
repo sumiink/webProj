@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>jq_ajax_2.html</title>
+<style>
+	tr:nth-of-type(2n) {
+		background-color: yellow;
+}
+</style>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script>
+	$(document).ready(function() { //페이지 로딩된 다음 실행하겠다.
+		$.post('../MOCK_DATA.json', function(data) {					//post 방식 :pom태그  get방식 : 제이슨데이터 가져오는 값
+			console.log(data);
+			let $table = $('<table />').attr('border', '1');
+			for (let i = 0; i < data.length; i++) {
+				let $tr = $('<tr />');
+				let $td_id = $('<td />').html(data[i].id); //아이디값
+				let $td_fn = $('<td />').html(data[i].first_name);
+				let $td_ln = $('<td />').html(data[i].last_name);
+				let $td_em = $('<td />').html(data[i].email);
+
+				$tr.append($td_id, $td_fn, $td_ln, $td_em);
+				$table.append($tr);
+			}
+			$('#show').append($table);
+		}, 'json');
+
+		//		$('#show').html('hello')
+
+	})
+	$('#show').html('hello')
+</script>
+</head>
+<body>
+	<div id='show'></div>
+</body>
+</html>

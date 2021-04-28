@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>jq_ajax_3.html</title>
+
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script>
+	$(document).ready(function() { //페이지 로딩된 다음 실행하겠다.
+		$.get('../ajax.html', function(data) {					//post 방식 :pom태그  get방식 : 제이슨데이터 가져오는 값
+			console.log(data);
+		
+		}, 'html');
+
+		//		$('#show').html('hello')
+
+	})
+
+</script>
+</head>
+<body>
+	<div id='show'></div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>jq_event2_4.html</title>
+<style>
+#show {
+	background-color: yellow;
+	width: 300px;
+	height: 200px;
+}
+
+.item {
+	width: 50px;
+	height: 30px;
+	display: inline-block;
+	background-color: aqua;
+	border: 1px dotted greenyellow;
+}
+</style>
+<script src=" ../js/jquery-3.6.0.min.js"></script>
+<script>
+	$(function() {
+		//등록 event
+		$('#name').keypress(
+				function(e) {
+					if (e.keyCode == 13) { //enter keycode
+						let inputVal = $(this).val();
+						console.log(inputVal);
+						$('#show').append(
+								$('<div />').html(inputVal).addClass('item'));
+						$(this).val(''); //enter후 비워줌
+					}
+				});
+		//제거
+		$('#eman').bind('keydown', function(e){
+			if(e.keyCode == 13){
+				let iword = $(this).val();
+				//$('#show div:contains('+iword+')').remove();			//입력한값이 모두 일치하지 않아도 삭제됨
+				let contents =$('#show').contents();
+				for(let i=0; i<contents.length; i++){
+					if(contents[i].innerHTML == iword){					//값이 같으면 삭제
+						contents[i].remove();
+					}	
+				}
+				$(this).val('');
+			}
+		});
+		$('#name').focus();
+	})
+</script>
+</head>
+<body>
+	<input type="text" name="name" id='name'>
+	<div id='show'></div>
+	<input type="text" name="eman" id='eman'>
+</body>
+</html>

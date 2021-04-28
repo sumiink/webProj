@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>jq_ajax_1.html</title>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script>
+	$(function() {
+		$('#show').load('jq_selec1_10.html div#wrap', //url
+						function(a,b,c){
+							console.log(a,b,c);
+						}
+			
+		);		//지정한 외부페이지 가져오기 load();
+	})
+</script>
+</head>
+<body>
+	<div id='show'></div>
+</body>
+</html>
