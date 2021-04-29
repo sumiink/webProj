@@ -7,25 +7,104 @@
 <script src="../js/jquery-3.6.0.min.js"></script>
 <script>
 	$(document).ready(function() { //페이지 로딩된 다음 실행하겠다.
+		// 회원 리스트 보여주기
 		$.ajax({
-			url: '../ajax.html',
+			url: 'memberServlet.do',
 			type: 'get', //post
-			data: 'p1=hello &p2=nice',
-			datatype: 'html',
-			success: function(resolve){
-				console.log(resolve);
-			},
+			//data: 'p1=hello &p2=nice',
+			dataType: 'json',
+			success: showList,
 			error: function(reject){
 				window.alert(reject.statusText);
 				console.error(`에러코드: ${reject.status}, 에러메세지: ${reject.statusText}`);
 			}
 		});
+		//한건 입력작업 ajax
+		$('#frm').on('submit', function(e){
+			e.preventDefault();		//기존 submit 기능 취소 서블릿페이지로 이동(x)
+			$.ajax({
+				url:$('#frm').attr('action'), // 'memverServlet.do'
+				data:'m_id=' + $('#m_id').val()+	//key=val&key2=val2&...
+					'&m_name=' + $('#m_name').val()+ 
+					'&m_age=' + $('#m_age').val(),
+				dataType:'json',
+				type:'post',
+				success: createRow,
+				error:function(err){
+					console.error(err);
+				}
+			});
+			
+		});
 	})
+	
+	function showList(resolve){
+		//console.log(resolve);
+		//아이디 이름 나이
+		// 1   hong 20
+		let table = $('<table id = "tbl" />').attr('border','1');
 
+		let title= {};
+		title.id = '아이디';
+		title.name = '이름';
+		title.age = '나이';
+		title.fnc = '기능';
+		let tr = $('<tr />').append(
+		 $('<th />').html(title.id),
+		 $('<th />').html(title.name),
+		 $('<th />').html(title.age),
+		 $('<th />').html(title.fnc)
+	);
+		//데이터
+		for (let i = 0; i < resolve.length; i++) {
+			let delBtn = $('<button/>').html('삭제');
+			delBtn.click(deleteRow);
+			let tr = $('<tr />');
+			let td_id = $('<td />').html(resolve[i].id); //아이디값
+			let td_nm = $('<td />').html(resolve[i].name);
+			let td_ag = $('<td />').html(resolve[i].age);
+			let button = $('<button/>').append(delBtn);
+			tr.append(td_id, td_nm, td_ag);
+			table.append(tr);
+		}
+		//div 요소에 append.
+		$('#show').append(table);
+		
+	}
+	function createRow(){
+		console.log(this);
+		//신규입력된 데이터를 화면에 추가로 보여주기.
+		let tr = $('<tr />');
+		let td_id = $('<td />').html(resolve[i].id); //아이디값
+		let td_nm = $('<td />').html(resolve[i].name);
+		let td_ag = $('<td />').html(resolve[i].age);
+		let button = $('<button/>').append(delBtn);
+		tr.append(td_id, td_nm, td_ag);
+		table.append(tr);
+	}
+	function deleteRow(){
+		console.log(this);		//this -> button
+		let delTr = $(this).parent().parent();
+		//db 삭제
+		$.ajax({
+			url : '../MemberDelServlet',
+			data: 'mid='+id,
+			success: function(){
+				console.log('삭제후 처리')
+				//화면 삭제
+				delTr.remove();
+			},
+			error: function(err){
+				console.log(err);
+			}
+		});
+		
+	}
 </script>
 </head>
 <body>
-	<form action='memberServlet.do' method='post'>
+
+	<form id="frm" action='memberServlet.do' method='post'>
 	ID:<input type="number" name="m_id" id="m_id" value=1 />
 	이름:<input type="text" name="m_name" id="m_name" value='hong' />
 	나이:<input type="number" name="m_age" id="m_age" value=29 />
