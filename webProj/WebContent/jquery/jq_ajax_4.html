@@ -21,7 +21,7 @@
 		});
 		//한건 입력작업 ajax
 		$('#frm').on('submit', function(e){
-			e.preventDefault();		//기존 submit 기능 취소 서블릿페이지로 이동(x)
+			e.preventDefault();		//기존 submit 기능 취소. 서블릿페이지로 이동(x)
 			$.ajax({
 				url:$('#frm').attr('action'), // 'memverServlet.do'
 				data:'m_id=' + $('#m_id').val()+	//key=val&key2=val2&...
