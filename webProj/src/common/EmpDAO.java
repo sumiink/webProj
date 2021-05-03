@@ -15,6 +15,36 @@ public class EmpDAO {
 	Statement stmt;
 	ResultSet rs;
 	PreparedStatement psmt;
+	
+	//resource 해제
+	public void close() {
+		 
+				if (rs != null) {
+					try {
+						rs.close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				if (stmt != null) {
+					try {
+						stmt.close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			
+	}
 
 	public Employee insertEmpBySeq(Employee emp) {
 		conn = DBCon.getConnect();
@@ -302,4 +332,73 @@ public class EmpDAO {
 		}
 		return map;
 	}
+	
+	//스케쥴 정보를 가지고 오는 메소드
+	public List<ScheduleVO> getScheduleList(){
+		conn = DBCon.getConnect();
+		
+		String sql ="select * from schedule";
+		List<ScheduleVO> list = new ArrayList<>();
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while(rs.next()) {
+				ScheduleVO vo = new ScheduleVO();
+				vo.setTitle(rs.getString("title"));
+				vo.setStartDay(rs.getString("start_day"));
+				vo.setEndDay(rs.getString("end_day"));
+				
+				list.add(vo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			if(rs!=null)
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			if(psmt!=null)
+				try {
+					psmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return list;
+	}
+	
+	// 스케쥴 한건 입력
+	public void insertSchedule(ScheduleVO vo) {
+		conn = DBCon.getConnect();
+		
+		String sql = "insert into schedule values(?,?,?)";
+		try {
+			psmt=conn.prepareStatement(sql);
+			psmt.setString(1, vo.getTitle());
+			psmt.setString(2, vo.getStartDay());
+			psmt.setString(3, vo.getEndDay());
+			
+			int r = psmt.executeUpdate();
+			System.out.println(r + "건 입력됨.");
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+	}
+	
+
+	
 }
