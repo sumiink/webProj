@@ -1,16 +1,111 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 <meta charset="UTF-8">
 <title>jquery/upload.html</title>
+<style>
+#img {
+	height: 220px;
+	width: 180px;
+}
+</style>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script>
+	$(document).ready(function(){
+		//db에 데이터를 화면에 출력  <div> <table></table> </div>
+		$.ajax({
+			url: '../getFileListServlet',
+			dataType: 'json', 	//json => object
+			success: function(result){
+				//table 활용해서 리스트 출력.
+				let tbl =$('<table />').attr('border','1');
+				for(let i=0; i<result.length; i++){
+					let tr = $('<tr />');
+					let td_fn= $('<td />').html(result[i].num);
+					let td_au= $('<td />').html(result[i].author);
+					let td_tt= $('<td />').html(result[i].title);
+					let td_da= $('<td />').html(result[i].day);
+					tr.append(tr, td_fn, td_au, td_tt, td_da);
+					tbl.append(tr);
+				}
+			$('#show').append(tbl);
+			},
+			error: function(){
+				
+			}, 
+			
+		});
+		
+		
+		//파일을 선택하면 이미지 나타나도록
+		$('#filename').change(function(){
+			for(let file of this.files) {
+				$('#img').attr('src', URL.createObjectURL(file));
+			}
+		});
+		
+		//전송을 누르면 
+		$('#frm').submit(function(e){
+			e.preventDefault();
+			let frm = document.getElementById('frm');
+			let data = new FormData(frm);
+			for(let k of data.entries()){
+				console.log(k);
+			}
+			//비동기 호출. 파일업로드 서블릿
+			$.ajax({
+				contentType: false,
+				processData: false,
+				url: $('#frm').attr('action'),
+				type: 'post',
+				dataType: 'json',
+				data: data,
+				success: function(result){
+					console.log(result);
+				},
+				error: function(err){
+					console.log(err);
+				}
+			});
+		});
+	});
+</script>
 </head>
+
 <body>
-<h1>Ajax 파일 업로드</h1>
-<form id='frm' action='uploadServlet' method='post' enctype='multipart/form-data'>
-	이름:<input type="text" name="name" value="홍길동">
-	파일:<input type="file" name ="file">
-	<input type="submit">
-	
-</form>
+	<h1>Ajax 파일 업로드</h1>
+	<form id='frm' action='../fileUploadServlet' method='post'
+		enctype='multipart/form-data'>	
+	<div id ='show'></div>
+		<table border="1">
+			<tr>
+				<td><label for="num">번호</label></td>
+				<td><input type="text" name="num" id="num"></td>
+				<td rowspan="4"><img src="" alt="선택한 파일" id='img'></td>
+			</tr>
+			<tr>
+				<td><label for="author">저자</label></td>
+				<td><input type="text" name="author" id="author"></td>
+
+			</tr>
+			<tr>
+				<td><label for="title">제목</label></td>
+				<td><input type="text" name="title" id="title"></td>
+
+			</tr>
+			<tr>
+				<td><label for="filename">파일첨부</label></td>
+				<td><input type="file" name="filename" id="filename"></td>
+
+			</tr>
+			<tr>
+				<td colspan="3"><input type="submit"> <input
+					type="reset"></td>
+			</tr>
+		</table>
+
+	</form>
 </body>
+
 </html>
