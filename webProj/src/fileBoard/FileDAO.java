@@ -13,15 +13,89 @@ public class FileDAO {
 	Connection conn;
 	PreparedStatement psmt;
 	ResultSet rs;
+
 	
-	public List<FileVO> getFileList(){
+	public void del(String num) {	//num값으로 한건 삭제
+		conn = DBCon.getConnect();
+		PreparedStatement psmt = null;
+		String sql = "delete from file_board where num =?";
+
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, num);
+			int r = psmt.executeUpdate();
+			System.out.println(r + "건 삭제.");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (psmt != null) {
+				try {
+					psmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+	}
+
+	public FileVO getFile(int num) { // num값으로 한건 초죄
+		conn = DBCon.getConnect();
+		String sql = "select * from file_board where num=?";
+		FileVO file = new FileVO();
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, num);
+			rs = psmt.executeQuery();
+			if (rs.next()) {
+				file.setAuthor(rs.getString("author"));
+				file.setDay(rs.getString("day"));
+				file.setFileName(rs.getString("file_name"));
+				file.setNum(rs.getInt("num"));
+				file.setTitle(rs.getString("title"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (psmt != null) {
+				try {
+					psmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return file;
+	}
+
+	public List<FileVO> getFileList() {
 		conn = DBCon.getConnect();
 		List<FileVO> list = new ArrayList<>();
 		try {
 			psmt = conn.prepareStatement("select * from file_board");
 			rs = psmt.executeQuery();
-			
-			while(rs.next()) {
+
+			while (rs.next()) {
 				FileVO vo = new FileVO();
 				vo.setAuthor(rs.getString("author"));
 				vo.setDay(rs.getString("day"));
@@ -32,22 +106,22 @@ public class FileDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
-			if(rs != null) {
+		} finally {
+			if (rs != null) {
 				try {
 					rs.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 			}
-			if(psmt != null) {
+			if (psmt != null) {
 				try {
 					psmt.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 			}
-			if(conn != null) {
+			if (conn != null) {
 				try {
 					conn.close();
 				} catch (SQLException e) {
@@ -82,38 +156,38 @@ public class FileDAO {
 			psmt.setString(4, vo.getFileName());
 			int r = psmt.executeUpdate();
 			System.out.println(r + "건 입력");
-			
-			//신규입력된 전체정보 가져오기
+
+			// 신규입력된 전체정보 가져오기
 			psmt = conn.prepareStatement(selectSql);
 			psmt.setInt(1, key);
 			rs = psmt.executeQuery();
-			if(rs.next()) {
+			if (rs.next()) {
 				file.setAuthor(rs.getString("author"));
 				file.setDay(rs.getString("day"));
 				file.setFileName(rs.getString("file_name"));
 				file.setNum(rs.getInt("num"));
 				file.setTitle(rs.getString("title"));
-				
+
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
-			if(rs != null) {
+		} finally {
+			if (rs != null) {
 				try {
 					rs.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 			}
-			if(psmt != null) {
+			if (psmt != null) {
 				try {
 					psmt.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 			}
-			if(conn != null) {
+			if (conn != null) {
 				try {
 					conn.close();
 				} catch (SQLException e) {

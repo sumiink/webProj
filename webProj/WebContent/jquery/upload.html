@@ -9,6 +9,9 @@
 	height: 220px;
 	width: 180px;
 }
+#show{
+	padding-top: 15px;
+}
 </style>
 <script src="../js/jquery-3.6.0.min.js"></script>
 <script>
@@ -19,23 +22,103 @@
 			dataType: 'json', 	//json => object
 			success: function(result){
 				//table 활용해서 리스트 출력.
+				console.log(result);
 				let tbl =$('<table />').attr('border','1');
-				for(let i=0; i<result.length; i++){
-					let tr = $('<tr />');
-					let td_fn= $('<td />').html(result[i].num);
-					let td_au= $('<td />').html(result[i].author);
-					let td_tt= $('<td />').html(result[i].title);
-					let td_da= $('<td />').html(result[i].day);
-					tr.append(tr, td_fn, td_au, td_tt, td_da);
-					tbl.append(tr);
-				}
-			$('#show').append(tbl);
-			},
-			error: function(){
-				
-			}, 
 			
+				tbl.append(getTitle());
+				//result결과 table에 append
+				
+				for(let obj of result ){			
+					let tr = $('<tr />');
+					let alink = $('<a />').attr('href', '#').html(obj.title);
+					alink.click(linkClickCallBack);				//a link클릭시 callback
+					let btn = $('<button/>').html('삭제');
+					btn.click(deleteRow);
+					tr.click(function(){
+						console.log('tr클릭')
+					});
+					tr.append(
+							$('<td />').html(obj.num),
+							$('<td />').append(alink),
+							$('<td />').html(obj.author),
+							$('<td />').html(obj.fileName),
+							$('<td />').html(obj.day),
+							$('<td />').html(btn)
+                            
+				 ); tbl.append(tr);
+				}
+					$('#show').append(tbl);
+				},
+			error: function(){
+	
+			} 
 		});
+		
+		
+	function deleteRow(e){
+			console.log(this);		//this -> button
+			let delTr = $(this).parent().parent();
+			let num = $(this).parent().parent().children().eq(0).html();
+			console.log(num);
+			e.preventDefault();	
+			e.stopPropagation();
+			//db 삭제
+			$.ajax({
+				url : '../fileDelServlet',
+				data: 'num='+ num,
+				success: function(){
+					console.log('삭제')
+					delTr.remove();				
+				},
+				error: function(err){
+					console.log(err);
+				}
+			});
+			
+		}
+	
+	// 링크 클릭시 callBack
+	function  linkClickCallBack(e){
+		console.log('a클릭.', $(this).parentsUntil('table').eq(1).children().eq(0).html());
+		let num = $(this).parent().parent().children().eq().html();
+		num = $(this)	//a태그
+		.parent()		//td태그
+		.prev()			//number값을 가지는 td태그
+		.html();		//td가 가진 html속성
+		e.preventDefault();		//default기능 차단
+		e.stopPropagation();	//event전파차단
+		$.ajax({
+			url: '../getFileServlet',	//호출할 페이지(서블릿)
+			data: 'num=' + num ,
+			dataType: 'json',
+			type: 'get',
+			success: function(result){
+				console.log(result);
+				//화면에 가져온 정보를 보여주도록.
+				$('#num').val(result.num);
+				$('#author').val(result.author);
+				$('#title').val(result.title);
+				$('#img').attr('src', '../upload/' + result.fileName);
+			},
+			error: function(reject){
+				console.log(reject);
+			}
+		});
+	}
+	
+	//테이블의 타이틀
+	function getTitle(){
+		let title = $('<tr />');
+		title.append(
+			$('<th />').html('번호'),
+			$('<th />').html('제목'),
+			$('<th />').html('저자'),
+			$('<th />').html('파일명'),
+			$('<th />').html('날짜'),
+			$('<th />').html('기능')
+		);
+		return title;
+	}
 		
 		
 		//파일을 선택하면 이미지 나타나도록
@@ -52,8 +135,11 @@
 			let data = new FormData(frm);
 			for(let k of data.entries()){
 				console.log(k);
+			
+				var newinsert = $("tr[name=tr]:last");
+				newinsert.after(tr);
 			}
-			//비동기 호출. 파일업로드 서블릿
+		//비동기 호출. 파일업로드 서블릿
 			$.ajax({
 				contentType: false,
 				processData: false,
@@ -77,7 +163,7 @@
 	<h1>Ajax 파일 업로드</h1>
 	<form id='frm' action='../fileUploadServlet' method='post'
 		enctype='multipart/form-data'>	
-	<div id ='show'></div>
+	
 		<table border="1">
 			<tr>
 				<td><label for="num">번호</label></td>
@@ -104,7 +190,7 @@
 					type="reset"></td>
 			</tr>
 		</table>
-
+		<div id ='show'></div>
 	</form>
 </body>
 
