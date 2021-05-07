@@ -55,6 +55,7 @@
 		});
 		
 		
+	//삭제클ㄹ릭	
 	function deleteRow(e){
 			console.log(this);		//this -> button
 			let delTr = $(this).parent().parent();
@@ -128,7 +129,7 @@
 			}
 		});
 		
-		//전송을 누르면 
+		//전송을 누르면    D:\workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\webProj\upload
 		$('#frm').submit(function(e){
 			e.preventDefault();
 			let frm = document.getElementById('frm');
@@ -136,8 +137,7 @@
 			for(let k of data.entries()){
 				console.log(k);
 			
-				var newinsert = $("tr[name=tr]:last");
-				newinsert.after(tr);
+			
 			}
 		//비동기 호출. 파일업로드 서블릿
 			$.ajax({
@@ -155,6 +155,38 @@
 				}
 			});
 		});
+		
+		//수정버튼 클릭 이벤트
+		$('#modifybtn').click(function(e){
+			e.preventDefault();			//event 가진 default기능 제한
+			let frm = document.getElementById('frm');
+			let data = new FormData(frm);
+			
+			//ajax 
+			$.ajax({
+				contentType:false,
+				processData: false,
+				url: '../fileModifyServlet',
+				data: data,
+				type: 'post',
+				dataType:'json',
+				success: function(result){		//{ret}
+					if(result.retCode == 'Success'){
+						window.alert('정상수정됨');
+						//화면 수정
+						
+						
+					}else{
+						window.alert('수정예외발생');
+					}
+				},
+				error: function(err){
+					console.log(err);
+				}
+			});
+			
+		});
+	
 	});
 </script>
 </head>
@@ -186,8 +218,11 @@
 
 			</tr>
 			<tr>
-				<td colspan="3"><input type="submit"> <input
-					type="reset"></td>
+				<td colspan="3"><input type="submit"> 
+								<input type="reset">
+								<button id = 'modifybtn'>수정</button>
+				</td>
+		
 			</tr>
 		</table>
 		<div id ='show'></div>

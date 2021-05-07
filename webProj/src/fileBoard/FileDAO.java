@@ -14,8 +14,7 @@ public class FileDAO {
 	PreparedStatement psmt;
 	ResultSet rs;
 
-	
-	public void del(String num) {	//num값으로 한건 삭제
+	public void del(String num) { // num값으로 한건 삭제
 		conn = DBCon.getConnect();
 		PreparedStatement psmt = null;
 		String sql = "delete from file_board where num =?";
@@ -197,5 +196,48 @@ public class FileDAO {
 		}
 
 		return file;
+	}
+
+	public boolean updateFile(FileVO vo) {
+		conn = DBCon.getConnect();
+		PreparedStatement psmt = null;
+		int modifyCnt = 0; // 수정이 0이면 수정이 안된거라 false, 수정시True
+		String sql = "update file_board set author=?, title=?, file_name=? where num=?";
+
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, vo.getAuthor());
+			psmt.setString(2, vo.getTitle());
+			psmt.setString(3, vo.getFileName());
+			psmt.setInt(4, vo.getNum());
+
+			modifyCnt = psmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (psmt != null) {
+				try {
+					psmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return modifyCnt == 0 ? false : true;
 	}
 }

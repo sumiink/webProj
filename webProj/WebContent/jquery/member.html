@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<style>
+</style>
+<script>							//cholee@yedam.ac
+
+$(document).ready(function(){
+	$.ajax({
+		url: '../getfileServlet',
+		dataType: 'json', 	
+		success: function(result){
+			console.log(result);
+			let tbl =$('<table />').attr('border','1');
+			
+			tbl.append(getTitle());
+		
+			for(let obj of result ){			
+				let tr = $('<tr />');
+				let btn = $('<button/>').html('수정');
+				btn.click(modify);
+				
+				tr.append(
+						$('<td />').html(obj.id),
+						$('<td />').html(obj.name),
+						$('<td />').html(obj.tel),
+						$('<td />').html(obj.gender),
+						$('<td />').html(btn)
+                        
+			 ); tbl.append(tr);
+			}
+				$('#show').append(tbl);
+			},
+		error: function(){
+
+		} 
+	});
+});
+function modify(){
+	let frm = document.getElementById('frm');
+	let data = new FormData(frm);
+	
+	$.ajax({
+		contentType:false,
+		processData: false,
+		url:'',
+		data: data,
+		type: 'post',
+		dataType:'json',
+		success: function(result){},
+		error: function(err){}
+	})
+}
+
+function getTitle(){
+	let title = $('<tr />');
+	title.append(
+			$('<th />').html('사용ID'),
+			$('<th />').html('이름'),
+			$('<th />').html('연락처'),
+			$('<th />').html('성별'),
+			$('<th />').html('기능')
+		);
+		return title;
+}
+
+</script>
+</head>
+<body>
+	<h4>
+		<등록화면>
+	</h4>
+	<form id='frm' action='../memberServlet' method='post'
+		enctype='multipart/form-data'>
+
+		<table border="1px">
+			<tr id=table>
+				<td>사용ID</td>
+				<td><input type="text" name="id"></td>
+			</tr>
+			<tr>
+				<td>이름</td>
+				<td><input type="text" name="name"></td>
+			</tr>
+			<tr>
+				<td>비밀번호</td>
+				<td><input type="text" name="pw"></td>
+			</tr>
+			<tr>
+				<td>연락처</td>
+				<td><input type="text" name="tel"></td>
+			</tr>
+			<tr>
+				<td>성별</td>
+				<td><input type='radio' val="남성" name="gender">남성 <input
+					type='radio' val="여성" name="gender">여성</td>
+			</tr>
+			<tr>
+				<td colspan=2>
+					<button id='submit'>등록</button>
+					<button id='cancel'>취소</button>
+				</td>
+			</tr>
+		</table>
+		<div id='show'></div>
+	</form>
+</body>
+</html>
