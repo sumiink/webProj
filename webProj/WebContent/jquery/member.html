@@ -5,6 +5,9 @@
 <title>Insert title here</title>
 <script src="../js/jquery-3.6.0.min.js"></script>
 <style>
+#show{
+	padding-top: 15px;
+}
 </style>
 <script>							//cholee@yedam.ac
 
@@ -24,9 +27,9 @@ $(document).ready(function(){
 				btn.click(modify);
 				
 				tr.append(
-						$('<td />').html(obj.id),
-						$('<td />').html(obj.name),
-						$('<td />').html(obj.tel),
+						$('<td />'+'<input type="text" nae="id">').html(obj.id),
+						$('<td /><input type="text" name="id">').html(obj.name),
+						$('<td /><input type="text" name="id">').html(obj.tel),
 						$('<td />').html(obj.gender),
 						$('<td />').html(btn)
                         

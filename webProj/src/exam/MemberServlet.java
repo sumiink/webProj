@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import common.DBCon;
 
-@WebServlet(name = "MemberServlet", urlPatterns = { "/memberServlet" })
+@WebServlet("/memberServlet")
 public class MemberServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -26,9 +26,11 @@ public class MemberServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
+		
 		Connection conn = DBCon.getConnect();
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
+		
 		String sql = "select * from user_temp";
 		String json = "[";
 		try {
@@ -75,11 +77,11 @@ public class MemberServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String p1 = request.getParameter("m_id");
-		String p2 = request.getParameter("m_name");
-		String p3 = request.getParameter("m_ps");
-		String p4 = request.getParameter("m_tel");
-		String p5 = request.getParameter("m_gen");
+		String p1 = request.getParameter("user_id");
+		String p2 = request.getParameter("user_name");
+		String p3 = request.getParameter("user_pass");
+		String p4 = request.getParameter("user_phone");
+		String p5 = request.getParameter("user_gender");
 
 		PreparedStatement psmt = null;
 		Connection conn = DBCon.getConnect();
